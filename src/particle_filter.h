@@ -11,6 +11,19 @@
 
 #include <string>
 #include <vector>
+#include <random>
+
+#define _USE_MATH_DEFINES
+#include <cmath>
+
+#ifndef M_PI
+#define M_PI (3.14159265358979323846)
+#endif
+
+#ifndef M_PIl
+#define M_PIl (3.14159265358979323846264338327950288)
+#endif
+
 #include "helper_functions.h"
 
 struct Particle {
@@ -63,8 +76,8 @@ class ParticleFilter {
    * @param predicted Vector of predicted landmark observations
    * @param observations Vector of landmark observations
    */
-  void dataAssociation(std::vector<LandmarkObs> predicted, 
-                       std::vector<LandmarkObs>& observations);
+  LandmarkObs dataAssociation(  const Map &map_landmarks, 
+                                const LandmarkObs &predicted );
   
   /**
    * updateWeights Updates the weights for each particle based on the likelihood
@@ -112,6 +125,8 @@ class ParticleFilter {
   std::vector<Particle> particles;
 
  private:
+  LandmarkObs toMapFrame( double xt, double yt, double theta, const LandmarkObs &obs );
+
   // Number of particles to draw
   int num_particles; 
   
